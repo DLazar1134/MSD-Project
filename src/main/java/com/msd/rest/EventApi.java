@@ -1,6 +1,9 @@
-package msd;
+package com.msd.rest;
 
 import java.util.List;
+
+import com.msd.model.Event;
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @Transactional
 @RequestMapping("/api")
-public class RestApi {
+public class EventApi {
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -46,15 +49,15 @@ public class RestApi {
 		entityManager.persist(newEvent);
 	}
 	
-	// Update one @Put
-	@PutMapping("/event/{id}")
-	public void updateEvent(@PathVariable long id, @RequestBody Event event) {
-		Event eventToUpdate = entityManager.find(Event.class, id);
-		eventToUpdate.id = event.id;
-		eventToUpdate.code = event.code;
-		eventToUpdate.title = event.title;
-		eventToUpdate.description = event.description;
-	}
+//	// Update one @Put
+//	@PutMapping("/event/{id}")
+//	public void updateEvent(@PathVariable long id, @RequestBody Event event) {
+//		Event eventToUpdate = entityManager.find(Event.class, id);
+//		eventToUpdate.id = event.id;
+//		eventToUpdate.code = event.code;
+//		eventToUpdate.title = event.title;
+//		eventToUpdate.description = event.description;
+//	}
 	
 	// Delete one
 	@DeleteMapping("/event/{id}")
