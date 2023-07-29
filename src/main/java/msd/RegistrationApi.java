@@ -85,9 +85,7 @@ public class RegistrationApi {
 		Registration reg  = new Registration(registration.event_id, registration.customer_id, date, registration.notes);
 		entityManager.persist(reg);
 		
-		URI location = new URI(url + reg.id);
-		ResponseEntity<?> response = ResponseEntity.created(location).build();
-		return response;
+		return ResponseEntity.created(new URI(url + reg.id)).build();
 	}
 	
 	@DeleteMapping("{id}")
@@ -95,8 +93,7 @@ public class RegistrationApi {
 		Registration registration = entityManager.find(Registration.class, id);
 		entityManager.remove(registration);
 		
-		ResponseEntity<?> response = ResponseEntity.ok().build();
-		return response;
+		return ResponseEntity.ok().build();
 	}
 
 }
