@@ -1,10 +1,13 @@
 package msd;
 
+import java.net.*;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+
+import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/customers")
 public class CustomerApi {
 	
-	
 	@PersistenceContext
 	private EntityManager entityManager;
 	
@@ -32,6 +34,12 @@ public class CustomerApi {
 		return allCustomers;
 	}
 	
+	@PostMapping
+	public void addCustomer(@RequestBody Customer customer) {
+		Customer newCustomer = new Customer(customer.getName(), customer.getPassword(), customer.getEmail());
+		entityManager.persist(newCustomer);
+	}
+	
 	@GetMapping("/byname/{name}")
 	public List<Customer> getCustomersByName(@PathVariable String name) {
 		List<Customer> customerToGet = entityManager.createQuery("SELECT c FROM Customer c WHERE c.name LIKE :custName").setParameter("custName", name).getResultList();
@@ -39,8 +47,8 @@ public class CustomerApi {
 	}
 	
 	@PostMapping("/byname")
-	public List<Customer> getCustomersByNamePost(@RequestBody String name) {
-		return getCustomersByName(name);
+	public List<Customer> getCustomersByNamePost(@RequestBody Customer customer) {
+		return getCustomersByName(customer.getName());
 	}
 	
 	@GetMapping("/{id}")
