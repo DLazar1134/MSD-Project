@@ -15,7 +15,6 @@ public class MockRegistrationService implements RegistrationService {
 		registrations.add(new Registration("1", "1", "2023-01-17T00:00:00.000+0000", "My notes"));
 		registrations.add(new Registration("2", "2", "2023-01-17T00:00:00.000+0000", "My notes"));
 		registrations.add(new Registration("3", "3", "2023-01-17T00:00:00.000+0000", "My notes"));
-
 	}
 
 	@Override
