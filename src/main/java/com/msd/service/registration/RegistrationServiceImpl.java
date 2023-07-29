@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.TimeZone;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.http.ResponseEntity;
