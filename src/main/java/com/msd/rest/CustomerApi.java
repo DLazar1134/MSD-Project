@@ -1,7 +1,9 @@
-package msd;
+package com.msd.rest;
 
 import java.net.*;
 import java.util.List;
+
+import com.msd.model.Customer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
