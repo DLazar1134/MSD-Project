@@ -11,8 +11,8 @@ public interface RegistrationService {
 	
 	public Registration getRegistration(Long id);
 	public List<Registration> getRegistrations();
-	public ResponseEntity<?> addRegistration(Registration registration) throws URISyntaxException;
-	public ResponseEntity<?> updateRegistration(Long id, Registration newRegistration) throws URISyntaxException;
-	public ResponseEntity<?> deleteRegistration(Long id);
+	public void addRegistration(Registration registration) throws URISyntaxException;
+	public void updateRegistration(Long id, Registration newRegistration) throws URISyntaxException;
+	public void deleteRegistration(Long id);
 	
 }

@@ -3,6 +3,7 @@ package com.msd.rest;
 import com.msd.model.Registration;
 import com.msd.service.registration.*;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -27,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegistrationApi {
 	
 	@Autowired
-	RegistrationServiceImpl service;
+	RegistrationService service;
 	
 	@GetMapping
 	public List<Registration> getRegistrations() {
@@ -41,17 +42,20 @@ public class RegistrationApi {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateRegistration(@PathVariable Long id, @RequestBody Registration registration) throws URISyntaxException {
-		return service.updateRegistration(id, registration);
+		service.updateRegistration(id, registration);
+		return ResponseEntity.created(new URI("http://localhost:8080/api/registrations/" + id)).build();
 	}
 
 	@PostMapping
 	public ResponseEntity<?> addRegistration(@RequestBody Registration registration) throws URISyntaxException {
-		return service.addRegistration(registration);
+		service.addRegistration(registration);
+		return ResponseEntity.created(new URI("http://localhost:8080/api/registrations/" + registration.id)).build();
 	}
 	
 	@DeleteMapping("{id}")
 	public ResponseEntity<?> deleteRegistration(@PathVariable Long id) throws URISyntaxException {
-		return service.deleteRegistration(id);
+		service.deleteRegistration(id);
+		return ResponseEntity.ok().build();
 	}
 
 }
