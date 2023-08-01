@@ -52,7 +52,7 @@ public class RegistrationApi {
 		return ResponseEntity.created(new URI("http://localhost:8080/api/registrations/" + registration.id)).build();
 	}
 	
-	@DeleteMapping("{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteRegistration(@PathVariable Long id) throws URISyntaxException {
 		service.deleteRegistration(id);
 		return ResponseEntity.ok().build();
