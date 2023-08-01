@@ -3,10 +3,14 @@ package com.msd.service.registration;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 
 import com.msd.model.Registration;
 
+@Repository
+@Profile("development")
 public class MockRegistrationService implements RegistrationService {
 	
 	static List<Registration> registrations = new ArrayList<Registration>();
@@ -28,21 +32,18 @@ public class MockRegistrationService implements RegistrationService {
 	}
 
 	@Override
-	public ResponseEntity<?> addRegistration(Registration registration) {
+	public void addRegistration(Registration registration) {
 		registrations.add(registration);
-		return null;
 	}
 
 	@Override
-	public ResponseEntity<?> updateRegistration(Long id, Registration registration) {
+	public void updateRegistration(Long id, Registration registration) {
 		registrations.add(id.intValue(), registration);
-		return null;
 	}
 
 	@Override
-	public ResponseEntity<?> deleteRegistration(Long id) {
+	public void deleteRegistration(Long id) {
 		registrations.remove(id);
-		return null;
 	}
 
 }

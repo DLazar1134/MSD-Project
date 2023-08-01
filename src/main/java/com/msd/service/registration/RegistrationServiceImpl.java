@@ -11,12 +11,14 @@ import java.util.TimeZone;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import com.msd.model.Registration;
 
 @Repository
+@Profile("production")
 public class RegistrationServiceImpl implements RegistrationService {
 		
 	@PersistenceContext
@@ -33,23 +35,22 @@ public class RegistrationServiceImpl implements RegistrationService {
 	}
 
 	@Override
-	public ResponseEntity<?> addRegistration(Registration registration) throws URISyntaxException {
-		return updateOrAdd(-1L, registration);
+	public void addRegistration(Registration registration) throws URISyntaxException {
+		updateOrAdd(-1L, registration);
 	}
 
 	@Override
-	public ResponseEntity<?> updateRegistration(Long id, Registration newRegistration) throws URISyntaxException {
-		return updateOrAdd(id, newRegistration);
+	public void updateRegistration(Long id, Registration newRegistration) throws URISyntaxException {
+		updateOrAdd(id, newRegistration);
 	}
 
 	@Override
-	public ResponseEntity<?> deleteRegistration(Long id) {
+	public void deleteRegistration(Long id) {
 		Registration registration = entityManager.find(Registration.class, id);
 		entityManager.remove(registration);
-		return ResponseEntity.ok().build();		
 	}
 	
-	private ResponseEntity<?> updateOrAdd(Long id, Registration registration) throws URISyntaxException {
+	private void updateOrAdd(Long id, Registration registration) throws URISyntaxException {
 		String date;
 		if(registration.registration_date.contains("T")) {
 			date = registration.registration_date;
@@ -66,11 +67,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 			reg.customer_id = registration.customer_id;
 			reg.registration_date = registration.registration_date;
 			reg.notes = registration.notes;
-			return ResponseEntity.ok().build();
 		} else {
 			reg = new Registration(registration.event_id, registration.customer_id, date, registration.notes);
 			entityManager.persist(reg);
-			return ResponseEntity.created(new URI("http://localhost:8080/api/registrations/" + reg.id)).build();
 		}
 	}
 	
