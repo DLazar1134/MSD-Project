@@ -1,16 +1,13 @@
 package com.msd.rest;
 
-import java.net.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
-import com.msd.model.Customer;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,54 +18,56 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.msd.model.Customer;
+import com.msd.service.customer.CustomerServiceImpl;
+
 @RestController
 @CrossOrigin
 @Transactional
 @RequestMapping("/api/customers")
 public class CustomerApi {
 	
-	@PersistenceContext
-	private EntityManager entityManager;
+	
+	
+	@Autowired 
+	CustomerServiceImpl service;
 	
 	@GetMapping
 	public List<Customer> getCustomers() {
-		List<Customer> allCustomers = entityManager.createQuery("from Customer", Customer.class).getResultList();
-		return allCustomers;
+		return service.getCustomers();
 	}
 	
 	@PostMapping
-	public void addCustomer(@RequestBody Customer customer) {
-		Customer newCustomer = new Customer(customer.getName(), customer.getPassword(), customer.getEmail());
-		entityManager.persist(newCustomer);
+	public ResponseEntity<?> addCustomer(@RequestBody Customer customer) throws URISyntaxException {
+		service.addCustomer(customer);
+		return ResponseEntity.created(new URI("http://localhost:8080/api/customers/" + customer.getId())).build();
 	}
 	
-	@GetMapping("/byname/{name}")
+	@PostMapping("/byname/{name}")
 	public List<Customer> getCustomersByName(@PathVariable String name) {
-		List<Customer> customerToGet = entityManager.createQuery("SELECT c FROM Customer c WHERE c.name LIKE :custName").setParameter("custName", name).getResultList();
-		return customerToGet;
+		return service.getCustomersByName(name);
 	}
 	
 	@PostMapping("/byname")
 	public List<Customer> getCustomersByNamePost(@RequestBody Customer customer) {
-		return getCustomersByName(customer.getName());
+		return service.getCustomersByName(customer.getName());
 	}
 	
 	@GetMapping("/{id}")
 	public Customer getCustomersById(@PathVariable int id) {
-		Customer customerToGet = entityManager.find(Customer.class, id);
-		return customerToGet;
+		return service.getCustomersById(id);
 	}
 	
-	@PutMapping("/{id}")
-	public void addCustomer(@PathVariable int id, @RequestBody Customer customer) {
-		Customer newCustomer = new Customer(customer.getName(), customer.getPassword(), customer.getEmail());
-		entityManager.persist(newCustomer);
+	@PutMapping ("/{id}")
+	public ResponseEntity<?> addCustomer(@PathVariable int id, @RequestBody Customer customer) throws URISyntaxException {
+		service.addCustomer(id, customer);
+		return ResponseEntity.created(new URI("http://localhost:8080/api/customers/" + customer.getId())).build();
 	}
 	
 	@DeleteMapping("/{id}")
-	public void deleteCustomer(@PathVariable int id) {
-		Customer customerToDelete = entityManager.find(Customer.class, id);
-		entityManager.remove(customerToDelete);
+	public ResponseEntity<?> deleteCustomer(@PathVariable int id) throws URISyntaxException {
+		service.deleteCustomer(id);
+		return ResponseEntity.ok().build();
 	}
 	
 }

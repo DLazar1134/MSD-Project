@@ -43,7 +43,6 @@ public class Customer {
 		this.name = name;
 	}
 
-	
 	public String getPassword() {
 		return password;
 	}
