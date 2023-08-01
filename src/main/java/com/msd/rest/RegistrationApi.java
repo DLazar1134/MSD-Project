@@ -49,7 +49,7 @@ public class RegistrationApi {
 		return service.addRegistration(registration);
 	}
 	
-	@DeleteMapping("{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteRegistration(@PathVariable Long id) throws URISyntaxException {
 		return service.deleteRegistration(id);
 	}
